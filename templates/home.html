@@ -1,0 +1,122 @@
+<html>
+   <body bgcolor=#d4a3ae>
+      <center>
+         <h1> Health Insurance Calculator </h1>
+         <br>
+         <form method="POST", id = 'form'>
+            <b>
+               Total Lives :  <input type="text", name='Tot_lives', placeholder="enter", id = "tot_lives"> <br><br>
+               Sum Insured :  <input type="text", name='Sum_insured', placeholder="enter", id = "sum_ins"> <br><br>
+               Age :  <input type="text", name='Age', placeholder="enter", id = "age"> <br><br>
+               <label for="Family_type">Choose Family Type:</label>
+               <select name="Family_type" id="Family_type">
+                  <option value="1">Employee Only</option>
+                  <option value="2">Employee Spouse Children</option>
+                  <option value="3">Employee Spouse Children Parent</option>
+               </select>
+               <br><br>
+               <label for="Room_rent">Room Rent:</label>		
+               <select name="Room_rent" id="Room_rent">
+                  <option value="1">Room rent 1% of SI maximum upto 3500 for Normal & 2% of SI maximum upto 5000 for ICU</option>
+                  <option value="2">Room rent 2% of SI maximum upto 4000 for Normal & 4% of SI maximum upto 7000 for ICU</option>
+                  <option value="3">Room rent No Limit</option>
+               </select>
+               <br><br>
+               <label for="Mat_amount">Maternity Cover Amount:</label>
+               <select name="Mat_amount" id="Mat_amount">
+                  <option value="1">No Maternity Cover</option>
+                  <option value="2">Maternity Cover For Metro 25000-35000 & For Non-Metro 20000-30000</option>
+                  <option value="3">Maternity Cover For Metro 35000-40000 & For Non-Metro 30000-35000</option>
+                  <option value="4">Maternity Cover For Metro 35000-50000 & For Non-Metro 35000-50000</option>
+                  <option value="5">Maternity Cover For Metro 50000-50000 & For Non-Metro 40000-40000</option>
+                  <option value="6">Maternity Cover For Metro 50000-50000 & For Non-Metro 50000-50000</option>
+                  <option value="7">Maternity Cover For Metro 75000-75000 & For Non-Metro 75000-75000</option>
+               </select>
+               <br><br>
+               <label for="Wait">Wait:</label>
+               <select name="Wait" id="Wait">
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
+               </select>
+               <br><br>
+               <label for="Init_wait">Initial Wait:</label>
+               <select name="Init_wait" id="Init_wait">
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
+               </select>
+               <br><br>
+               <label for="Mat_wait">Maternity Wait:</label>
+               <select name="Mat_wait" id="Mat_wait">
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
+               </select>
+               <br><br>
+               <br>
+            </b>
+         </form>
+      </center>
+      <center>
+      <center>
+         <h1>  The Insurance would be as follows :  </h1>
+         <p>
+         <h2> ICICI - </h2>
+         <b>
+            <div id = 'icici'> Null </div>
+         </b>
+         <br>
+         <h2> TATA - </h2>
+         <b>
+            <div id = 'tata'> Null </div>
+         </b>
+         <br><br>
+         </p>
+      </center>
+
+
+
+      <script src="https://code.jquery.com/jquery-3.5.1.js"
+         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+         crossorigin="anonymous"></script>
+      <script type="text/javascript">
+		  refresh = function(e){
+           console.log('hello');
+           e.preventDefault();
+           $.ajax({
+             type:'POST',
+             url:'/predict',
+             data:{
+				'Tot_lives' : $('#tot_lives').val(),
+				'Sum_insured' : $('#sum_ins').val(),
+				'Age' : $('#age').val(),
+				'Family_type' : $('#Family_type').val(),
+				'Room_rent' : $('#Room_rent').val(),
+				'Mat_amount' : $('#Mat_amount').val(),
+				'Wait' : $('#Wait').val(),
+				'Init_wait' : $('#Init_wait').val(),
+				'Mat_wait' : $('#Mat_wait').val(),
+
+             },
+             success:function(data)
+             {
+               
+               document.getElementById("tata").innerHTML = data['values'][1]
+               document.getElementById("icici").innerHTML = data['values'][0]
+
+             }
+           })
+         }
+         $(document).on('submit','#form',refresh);
+		 $('#tot_lives').change(refresh)
+		 $('#sum_ins').change(refresh)
+		 $('#age').change(refresh)
+		 $('#Family_type').change(refresh)
+		 $('#Room_rent').change(refresh)
+		 $('#Mat_amount').change(refresh)
+		 $('#Wait').change(refresh)
+		 $('#Init_wait').change(refresh)
+		 $('#Mat_wait').change(refresh)
+		 
+
+      </script>
+   </body>
+</html>
